@@ -12,6 +12,8 @@ import java.io.PrintStream;
 import java.net.Socket;
 import java.util.Random;
 import java.util.Scanner;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -29,43 +31,37 @@ public class Cliente implements Runnable{
         try {
             
             
-            ObjectOutputStream saida;
-            ObjectInputStream entrada;
+          // PrintStream saida;
+
+            ObjectOutputStream oos = null;
+            ObjectInputStream ois = null;
+                       
             System.out.println("O cliente conectou ao servidor");
 
             //Prepara para leitura do teclado
             System.out.println("Lado Cliente");
-            Scanner teclado = new Scanner(System.in);
-            
+                        
             Random random = new Random();
-            int numeros = random.nextInt()* 100;
+    
+           int vet[] = new int[2];
 
-            //Cria  objeto para enviar a mensagem ao servidor
-            saida = new ObjectOutputStream(this.cliente.getOutputStream());
-            entrada = new ObjectInputStream(this.cliente.getInputStream());
-        
-            saida.write(numeros);
+            oos = new ObjectOutputStream(this.cliente.getOutputStream());
             
-            int soma = entrada.readInt();
-            
-            System.out.println("soma = "+soma);
-
-            //Envia mensagem ao servidor
-//            while(teclado.hasNextLine()){
-//                saida.println(teclado.nextLine());          
-//            }
-
-
-//            while(saida){
-//                saida.println(numeros);          
-//            }
-
-            saida.close();
+            for(int i=0; i<vet.length; i++){
+                vet[i] = random.nextInt(10)+1;
+            }
+            oos.writeObject(vet);       
        
-            teclado.close();
+           //Envia mensagem ao servidor
+            
+            ois = new ObjectInputStream(this.cliente.getInputStream());
+            String msgReceive = (String) ois.readObject();
+            System.out.println("[Cliente] Recebido: " + msgReceive);
+      
             this.cliente.close();
             System.out.println("Fim do cliente!");
-        } catch (IOException e) {
+            
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
