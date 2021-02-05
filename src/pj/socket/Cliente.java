@@ -29,9 +29,6 @@ public class Cliente implements Runnable{
     @Override
     public void run() {
         try {
-            
-            
-          // PrintStream saida;
 
             ObjectOutputStream oos = null;
             ObjectInputStream ois = null;
@@ -41,28 +38,33 @@ public class Cliente implements Runnable{
             //Prepara para leitura do teclado
             System.out.println("Lado Cliente");
                         
-            Random random = new Random();
-    
-           int vet[] = new int[2];
+            Random random = new Random();    
+            int vet[] = new int[100];
 
             oos = new ObjectOutputStream(this.cliente.getOutputStream());
             
             for(int i=0; i<vet.length; i++){
-                vet[i] = random.nextInt(10)+1;
+                vet[i] = random.nextInt(100)+1;
             }
+            
             oos.writeObject(vet);       
        
            //Envia mensagem ao servidor
             
             ois = new ObjectInputStream(this.cliente.getInputStream());
-            String msgReceive = (String) ois.readObject();
+            int msgReceive = (Integer)ois.readInt();
+                       
             System.out.println("[Cliente] Recebido: " + msgReceive);
+            
+            
+            ois.close();
+            oos.close();
       
             this.cliente.close();
             System.out.println("Fim do cliente!");
             
         } catch (Exception e) {
-            e.printStackTrace();
+                e.printStackTrace();
         }
     }
 }

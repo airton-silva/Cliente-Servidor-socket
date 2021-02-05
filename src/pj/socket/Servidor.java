@@ -5,13 +5,11 @@
  */
 package pj.socket;
 
-import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.util.Scanner;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+
 
 
 /**
@@ -36,48 +34,48 @@ public class Servidor implements Runnable{
     @Override
     public void run() {
         
-    
+        
         
          System.out.println("Nova conexao com o cliente " + 
                  this.cliente.getInetAddress().getHostAddress());
          System.out.println("Lado Servidor");
          
-        try {
+        try {       
             
-             
-                long  init = System.currentTimeMillis();
-                System.out.println("Tempo Inicial: "+init);
-                
-                Scanner teclado = null;
+      
+                long  init = 0;
+                init = System.currentTimeMillis();
+                      
                 ObjectInputStream ois = new ObjectInputStream(this.cliente.getInputStream());
                 
-                int msgReceive[] = new int[2];
+                int msgReceive[] = new int[10];
                     msgReceive = (int[]) ois.readObject();
                     int rsp = soma(msgReceive);
-                    
-                    for(int i =0; i< msgReceive.length;i++){
-                        System.out.println("[Servidor] Recebido: " + msgReceive[i]);
-                    }
-                   
-                    System.out.println("Soma: " + rsp);                
-                
+//                    
+//                    for(int i =0; i< msgReceive.length;i++){
+//                        System.out.println("[Servidor] Recebido: " + msgReceive[i]);
+//                    }
+//                   
+                    System.out.println("Soma: " + rsp); 
  
                 // Cria uma saída para escrever no socket
                 ObjectOutputStream oos = new ObjectOutputStream(this.cliente.getOutputStream());
-
-                
-                oos.writeObject(rsp);
+                oos.writeInt(rsp);
+                //oos.writeObject(rsp);
+                oos.flush();
                
-                System.out.println("Time total: " + (System.currentTimeMillis() - init));
+                long tf = (System.currentTimeMillis() - init);
+                
+                System.out.println("Time total: " +tf );
+                
  
                 ois.close();
                 oos.close();
                 this.cliente.close();
-
             
        
         } catch (Exception e) {
-            e.printStackTrace();
+                e.printStackTrace();
         }
     }
 }

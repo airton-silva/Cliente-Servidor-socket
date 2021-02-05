@@ -30,21 +30,19 @@ public class MainServer {
         
         System.out.println("Aguardando conexão do cliente...");   
 
-        while (true) {
-                   
+        while (true) {                   
             
-            Socket cliente = servidor.accept();
+            Socket cliente = servidor.accept();            
+          
+            // Cria uma thread do servidor para tratar a conexão
+            Servidor tratamento = new Servidor(cliente);
+            Thread s1 = new Thread(tratamento);
+            //Thread s2 = new Thread(tratamento);  
+
+            // Inicia a thread para o cliente conectado
+            s1.start();
+            //s2.start();
             
-          
-          // Cria uma thread do servidor para tratar a conexão
-          Servidor tratamento = new Servidor(cliente);
-          Thread s1 = new Thread(tratamento);
-          //Thread s2 = new Thread(tratamento);
-          
-          
-          // Inicia a thread para o cliente conectado
-          s1.start();
-         // s2.start();
         }
         
     }

@@ -25,9 +25,9 @@ public class MainCliente {
         
         Cliente c = new Cliente(socket);
         Thread t = new Thread(c);
-        //Thread t2 = new Thread(c);
         t.start();
-        //t2.start();
+//        Thread t2 = new Thread(c);
+//        t2.start();
         
     }
 }
