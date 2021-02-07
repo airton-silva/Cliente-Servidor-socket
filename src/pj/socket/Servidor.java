@@ -8,9 +8,6 @@ package pj.socket;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
-import java.util.Scanner;
-
-
 
 /**
  *
@@ -31,52 +28,44 @@ public class Servidor implements Runnable{
        }
        return soma;
    }
+
+   
     @Override
     public void run() {
-        
-        
         
          System.out.println("Nova conexao com o cliente " + 
                  this.cliente.getInetAddress().getHostAddress());
          System.out.println("Lado Servidor");
          
         try {       
-            
-      
-                long  init = 0;
+
+                long  init = 0;                
                 init = System.currentTimeMillis();
-                      
+                                      
                 ObjectInputStream ois = new ObjectInputStream(this.cliente.getInputStream());
                 
-                int msgReceive[] = new int[10];
+                int msgReceive[] = new int[1000000];
                     msgReceive = (int[]) ois.readObject();
                     int rsp = soma(msgReceive);
-//                    
-//                    for(int i =0; i< msgReceive.length;i++){
-//                        System.out.println("[Servidor] Recebido: " + msgReceive[i]);
-//                    }
-//                   
-                    System.out.println("Soma: " + rsp); 
- 
+                   
+                    System.out.println("Soma dos Numero: " + rsp); 
+                    
+                    long tf = (System.currentTimeMillis() - init);
+                    
                 // Cria uma saída para escrever no socket
                 ObjectOutputStream oos = new ObjectOutputStream(this.cliente.getOutputStream());
                 oos.writeInt(rsp);
-                //oos.writeObject(rsp);
-                oos.flush();
-               
-                long tf = (System.currentTimeMillis() - init);
-                
-                System.out.println("Time total: " +tf );
-                
- 
+                oos.writeLong(tf);
+                oos.flush();  
+                               
+                System.out.println("Time do processo: " +tf );
+
                 ois.close();
                 oos.close();
-                this.cliente.close();
-            
-       
+                this.cliente.close();     
+
         } catch (Exception e) {
                 e.printStackTrace();
         }
     }
 }
-    //System.out.println("Tempo de conexão ="+ (System.currentTimeMillis() - init));

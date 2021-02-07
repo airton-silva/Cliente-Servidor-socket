@@ -7,6 +7,8 @@ package pj.socket;
 
 import java.io.IOException;
 import java.net.Socket;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  *
@@ -18,16 +20,21 @@ public class MainCliente {
         // Neste caso, usa-se o IP da máquina local (127.0.0.1)
         // e a porta da aplicação ServidorDeEco (10002).
         
-        Socket socket = new Socket("127.0.0.1", 10002);
+        int i = 0;
+        
+        while(i < 3){
+            Socket socket = new Socket("127.0.0.1", 10002);
 
-        /*Cria um novo objeto Cliente com a conexão socket para que seja executado em um novo processo.
-        Permitindo assim a conexão de vário clientes com o servidor.*/
-        
-        Cliente c = new Cliente(socket);
-        Thread t = new Thread(c);
-        t.start();
-//        Thread t2 = new Thread(c);
-//        t2.start();
-        
+            /*Cria um novo objeto Cliente com a conexão socket para que seja executado em um novo processo.
+            Permitindo assim a conexão de vário clientes com o servidor.*/
+
+            Cliente c = new Cliente(socket);
+            Thread ti = new Thread(c);
+            ti.start();
+
+                i++;
+
+        }
+           
     }
 }

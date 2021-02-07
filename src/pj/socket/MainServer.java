@@ -8,12 +8,16 @@ package pj.socket;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  *
  * @author Acer
  */
 public class MainServer {
+    
+    
     
     public static void main(String[] args) throws IOException {
         
@@ -29,21 +33,26 @@ public class MainServer {
         // Socket, que é uma porta da comunicação.
         
         System.out.println("Aguardando conexão do cliente...");   
-
-        while (true) {                   
-            
+        
+        while (true) {                              
+                      
             Socket cliente = servidor.accept();            
-          
+                     
             // Cria uma thread do servidor para tratar a conexão
             Servidor tratamento = new Servidor(cliente);
             Thread s1 = new Thread(tratamento);
             //Thread s2 = new Thread(tratamento);  
-
+            
             // Inicia a thread para o cliente conectado
             s1.start();
             //s2.start();
-            
-        }
+
+
+        }        
+        
         
     }
+    
+    
+    
 }

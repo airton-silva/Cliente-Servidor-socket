@@ -5,15 +5,12 @@
  */
 package pj.socket;
 
-import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.io.PrintStream;
 import java.net.Socket;
+import java.util.ArrayList;
 import java.util.Random;
-import java.util.Scanner;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+
 
 /**
  *
@@ -24,8 +21,9 @@ public class Cliente implements Runnable{
     
     public Cliente( Socket cliente){
         this.cliente = cliente;
+ 
     }
-
+    
     @Override
     public void run() {
         try {
@@ -39,7 +37,7 @@ public class Cliente implements Runnable{
             System.out.println("Lado Cliente");
                         
             Random random = new Random();    
-            int vet[] = new int[100];
+            int vet[] = new int[1000000];
 
             oos = new ObjectOutputStream(this.cliente.getOutputStream());
             
@@ -53,18 +51,26 @@ public class Cliente implements Runnable{
             
             ois = new ObjectInputStream(this.cliente.getInputStream());
             int msgReceive = (Integer)ois.readInt();
+            long tmp = (Long)ois.readLong();
+           
                        
-            System.out.println("[Cliente] Recebido: " + msgReceive);
-            
-            
+            System.out.println("[Cliente] Recebido soma dos numeros: " + msgReceive 
+                    + "\n Tempo de Excução do processo: " + tmp);
+          //  System.out.println("[Cliente] Tempo de Excução do processo: " + tmp);
+ 
             ois.close();
             oos.close();
       
             this.cliente.close();
+            
             System.out.println("Fim do cliente!");
+            
+
             
         } catch (Exception e) {
                 e.printStackTrace();
         }
+        
+        
     }
 }
